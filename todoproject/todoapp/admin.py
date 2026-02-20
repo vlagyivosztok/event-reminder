@@ -23,11 +23,4 @@ class EventAdmin(admin.ModelAdmin):
     list_filter = ('subcategory', 'person', 'deadline')
     search_fields = ('name', 'person__full_name')
 
-    def is_valid(self, obj):
-        # A határidő az érvényesség utolsó napja. Ma éjfélkor még érvényes.
-        return obj.deadline >= timezone.now().date()
-    
-    is_valid.boolean = True
-    is_valid.short_description = 'Érvényes?'
-
 admin.site.register(CustomUser, UserAdmin)

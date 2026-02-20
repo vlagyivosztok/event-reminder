@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.utils import timezone
 
 class CustomUser(AbstractUser):
     pass
@@ -46,6 +47,10 @@ class Event(models.Model):
 
     def __str__(self):
         return f"{self.name} - {self.person.full_name}"
+    @property
+    def is_valid(self):
+        # A határidő az érvényesség utolsó napja. Ma éjfélkor még érvényes.
+        return self.deadline >= timezone.now().date()
 
     class Meta:
         verbose_name = "Esemény"

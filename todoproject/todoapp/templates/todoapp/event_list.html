@@ -25,10 +25,9 @@
                     <td>{{ event.subcategory }}</td>
                     <td>{{ event.deadline|date:"Y. m. d." }}</td>
                     <td>
-                        {% if event in expired_events %} {# Temporary logic handled in view or property #}
+                        {% if not event.is_valid %}
                         <span class="status status-expired">Lejárt</span>
                         {% else %}
-                        {# We can use the is_valid logic from model or here #}
                         <span class="status status-valid">Érvényes</span>
                         {% endif %}
                     </td>
