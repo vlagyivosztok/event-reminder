@@ -1,9 +1,20 @@
-from django.shortcuts import render, redirect
-from django.views.generic import CreateView, ListView
+from django.views.generic import CreateView, ListView, TemplateView
+from django.utils import timezone
 from django.urls import reverse_lazy
 from django.http import JsonResponse
 from .models import Event, Person, MainCategory, SubCategory
 from .forms import EventForm, PersonForm, MainCategoryForm, SubCategoryForm
+
+class DashboardView(TemplateView):
+    template_name = 'todoapp/dashboard.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        today = timezone.now().date()
+        context['overdue_events'] = Event.objects.filter(deadline__lt=today).order_by('deadline')
+        context['total_events'] = Event.objects.count()
+        context['active_events'] = Event.objects.filter(deadline__gte=today).count()
+        return context
 
 class EventListView(ListView):
     model = Event

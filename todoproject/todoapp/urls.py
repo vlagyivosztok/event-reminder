@@ -2,7 +2,8 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('', views.EventListView.as_view(), name='event_list'),
+    path('', views.DashboardView.as_view(), name='dashboard'),
+    path('list/', views.EventListView.as_view(), name='event_list'),
     path('new/', views.EventCreateView.as_view(), name='event_create'),
     path('ajax/create-person/', views.ajax_create_person, name='ajax_create_person'),
     path('ajax/create-main-category/', views.ajax_create_main_category, name='ajax_create_main_category'),

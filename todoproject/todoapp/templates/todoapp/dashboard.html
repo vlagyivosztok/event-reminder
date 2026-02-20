@@ -1,0 +1,68 @@
+{% extends 'todoapp/base.html' %}
+
+{% block title %}Irányítópult{% endblock %}
+{% block header_title %}Irányítópult{% endblock %}
+
+{% block content %}
+<div
+    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+    <div class="card" style="padding: 1.5rem; border-left: 4px solid var(--primary);">
+        <h3 style="color: var(--text-muted); font-size: 0.875rem; text-transform: uppercase;">Összes esemény</h3>
+        <p style="font-size: 2rem; font-weight: 700; margin-top: 0.5rem;">{{ total_events }}</p>
+    </div>
+    <div class="card" style="padding: 1.5rem; border-left: 4px solid #10b981;">
+        <h3 style="color: var(--text-muted); font-size: 0.875rem; text-transform: uppercase;">Aktív</h3>
+        <p style="font-size: 2rem; font-weight: 700; margin-top: 0.5rem;">{{ active_events }}</p>
+    </div>
+    <div class="card" style="padding: 1.5rem; border-left: 4px solid var(--accent);">
+        <h3 style="color: var(--text-muted); font-size: 0.875rem; text-transform: uppercase;">Lejárt</h3>
+        <p style="font-size: 2rem; font-weight: 700; margin-top: 0.5rem;">{{ overdue_events.count }}</p>
+    </div>
+</div>
+
+<div class="card" style="margin-bottom: 2rem;">
+    <h2 style="margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
+        <span style="color: var(--accent);">⚠️</span> Lejárt Események
+    </h2>
+    {% if overdue_events %}
+    <div style="overflow-x: auto;">
+        <table>
+            <thead>
+                <tr>
+                    <th>Név</th>
+                    <th>Személy</th>
+                    <th>Határidő</th>
+                    <th>Művelet</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for event in overdue_events %}
+                <tr>
+                    <td><strong>{{ event.name }}</strong></td>
+                    <td>{{ event.person.full_name }}</td>
+                    <td style="color: var(--accent); font-weight: 600;">{{ event.deadline|date:"Y. m. d." }}</td>
+                    <td>
+                        <a href="/admin/todoapp/event/{{ event.id }}/change/" class="status status-expired"
+                            style="text-decoration: none;">Szerkesztés</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <p style="text-align: center; color: var(--text-muted); padding: 1rem;">Nincs lejárt esemény. Szép munka!</p>
+    {% endif %}
+</div>
+
+<div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+    <a href="{% url 'event_create' %}" class="btn btn-primary"
+        style="flex: 1; justify-content: center; min-width: 200px; padding: 1rem;">
+        ➕ Új Esemény Létrehozása
+    </a>
+    <a href="{% url 'event_list' %}" class="btn"
+        style="flex: 1; justify-content: center; min-width: 200px; border: 1px solid var(--border); background: #fff; padding: 1rem;">
+        📋 Összes Esemény Listája
+    </a>
+</div>
+{% endblock %}
