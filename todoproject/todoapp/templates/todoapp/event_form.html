@@ -3,6 +3,11 @@
 {% block title %}Új Esemény Létrehozása{% endblock %}
 {% block header_title %}Új Esemény{% endblock %}
 
+{% block nav_buttons %}
+<a href="{% url 'dashboard' %}" class="btn">Műszerfal</a>
+<a href="{% url 'event_list' %}" class="btn btn-primary">Lista</a>
+{% endblock %}
+
 {% block content %}
 <div class="card">
     <form method="post">
