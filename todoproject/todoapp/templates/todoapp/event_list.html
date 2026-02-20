@@ -1,0 +1,44 @@
+{% extends 'todoapp/base.html' %}
+
+{% block title %}Események Listája{% endblock %}
+{% block header_title %}Minden Esemény{% endblock %}
+
+{% block content %}
+<div class="card">
+    {% if events %}
+    <div style="overflow-x: auto;">
+        <table>
+            <thead>
+                <tr>
+                    <th>Esemény neve</th>
+                    <th>Személy</th>
+                    <th>Kategória</th>
+                    <th>Határidő</th>
+                    <th>Állapot</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for event in events %}
+                <tr>
+                    <td><strong>{{ event.name }}</strong></td>
+                    <td>{{ event.person.full_name }}</td>
+                    <td>{{ event.subcategory }}</td>
+                    <td>{{ event.deadline|date:"Y. m. d." }}</td>
+                    <td>
+                        {% if event in expired_events %} {# Temporary logic handled in view or property #}
+                        <span class="status status-expired">Lejárt</span>
+                        {% else %}
+                        {# We can use the is_valid logic from model or here #}
+                        <span class="status status-valid">Érvényes</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <p style="text-align: center; color: var(--text-muted); padding: 2rem;">Nincs még rögzített esemény.</p>
+    {% endif %}
+</div>
+{% endblock %}
